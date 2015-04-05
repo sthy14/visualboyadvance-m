@@ -19,35 +19,6 @@
 #include "filters.h"
 #include "intl.h"
 
-void _2xSaI        (u8 *, u32, u8 *, u8 *, u32, int, int);
-void _2xSaI32      (u8 *, u32, u8 *, u8 *, u32, int, int);
-void Super2xSaI    (u8 *, u32, u8 *, u8 *, u32, int, int);
-void Super2xSaI32  (u8 *, u32, u8 *, u8 *, u32, int, int);
-void SuperEagle    (u8 *, u32, u8 *, u8 *, u32, int, int);
-void SuperEagle32  (u8 *, u32, u8 *, u8 *, u32, int, int);
-void Pixelate      (u8 *, u32, u8 *, u8 *, u32, int, int);
-void Pixelate32    (u8 *, u32, u8 *, u8 *, u32, int, int);
-void AdMame2x      (u8 *, u32, u8 *, u8 *, u32, int, int);
-void AdMame2x32    (u8 *, u32, u8 *, u8 *, u32, int, int);
-void Bilinear      (u8 *, u32, u8 *, u8 *, u32, int, int);
-void Bilinear32    (u8 *, u32, u8 *, u8 *, u32, int, int);
-void BilinearPlus  (u8 *, u32, u8 *, u8 *, u32, int, int);
-void BilinearPlus32(u8 *, u32, u8 *, u8 *, u32, int, int);
-void Scanlines     (u8 *, u32, u8 *, u8 *, u32, int, int);
-void Scanlines32   (u8 *, u32, u8 *, u8 *, u32, int, int);
-void ScanlinesTV   (u8 *, u32, u8 *, u8 *, u32, int, int);
-void ScanlinesTV32 (u8 *, u32, u8 *, u8 *, u32, int, int);
-void hq2x          (u8 *, u32, u8 *, u8 *, u32, int, int);
-void hq2x32        (u8 *, u32, u8 *, u8 *, u32, int, int);
-void lq2x          (u8 *, u32, u8 *, u8 *, u32, int, int);
-void lq2x32        (u8 *, u32, u8 *, u8 *, u32, int, int);
-void xbrz2x32      (u8 *, u32, u8 *, u8 *, u32, int, int);
-
-void SmartIB       (u8 *, u32, int, int);
-void SmartIB32     (u8 *, u32, int, int);
-void MotionBlurIB  (u8 *, u32, int, int);
-void MotionBlurIB32(u8 *, u32, int, int);
-
 namespace VBA
 {
 
@@ -68,7 +39,10 @@ static const astFilters[] =
   { N_("Bilinear Plus"),       2, { BilinearPlus, BilinearPlus32 } },
   { N_("Scanlines"),           2, { Scanlines,    Scanlines32    } },
   { N_("TV Mode"),             2, { ScanlinesTV,  ScanlinesTV32  } },
+  { N_("lq2x"),                2, { lq2x,         lq2x32         } },
   { N_("hq2x"),                2, { hq2x,         hq2x32         } },
+  { N_("hq3x"),                2, { hq3x16,       hq3x32         } },
+  { N_("hq4x"),                2, { hq4x16,       hq4x32         } },
   { N_("lq2x"),                2, { lq2x,         lq2x32         } },
   { N_("xbrz2x"),              2, { 0,            xbrz2x32       } }
 };

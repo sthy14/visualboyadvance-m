@@ -39,6 +39,8 @@
 
 #include "../version.h"
 
+#include "../filters/interframe.hpp"
+
 /* Link
 ---------------------*/
 #include "../gba/GBALink.h"
@@ -82,11 +84,6 @@ extern void xbrz2x32(u8*,u32,u8*,u8*,u32,int,int);
 extern void xbrz3x32(u8*,u32,u8*,u8*,u32,int,int);
 extern void xbrz4x32(u8*,u32,u8*,u8*,u32,int,int);
 extern void xbrz5x32(u8*,u32,u8*,u8*,u32,int,int);
-
-extern void SmartIB(u8*,u32,int,int);
-extern void SmartIB32(u8*,u32,int,int);
-extern void MotionBlurIB(u8*,u32,int,int);
-extern void MotionBlurIB32(u8*,u32,int,int);
 
 extern IDisplay *newGDIDisplay();
 extern IDisplay *newDirectDrawDisplay();

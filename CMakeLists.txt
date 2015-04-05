@@ -12,12 +12,12 @@ SET(EXECUTABLE_OUTPUT_PATH ${PROJECT_BINARY_DIR})
 
 option( ENABLE_SDL "Build the SDL port" ON )
 option( ENABLE_GTK "Build the GTK+ GUI" ON )
-option( ENABLE_WX "Build the wxWidgets port" OFF )
+option( ENABLE_WX "Build the wxWidgets port" ON )
 option( ENABLE_DEBUGGER "Enable the debugger" ON )
 option( ENABLE_NLS "Enable translations" ON )
 option( ENABLE_ASM_CORE "Enable x86 ASM CPU cores" OFF )
 option( ENABLE_ASM_SCALERS "Enable x86 ASM graphic filters" OFF )
-option( ENABLE_LINK "Enable GBA linking functionality" OFF )
+option( ENABLE_LINK "Enable GBA linking functionality" ON )
 option( ENABLE_LIRC "Enable LIRC support" OFF )
 option( ENABLE_FFMPEG "Enable ffmpeg A/V recording" OFF )
 if(ENABLE_ASM_SCALERS)
@@ -256,6 +256,7 @@ SET(SRC_SDL
 )
 
 SET(SRC_FILTERS
+    src/filters/filters.cpp
     src/filters/2xSaI.cpp
     src/filters/admame.cpp
     src/filters/bilinear.cpp
@@ -266,6 +267,7 @@ SET(SRC_FILTERS
     src/filters/simpleFilter.cpp
     src/filters/xbrzfilter.cpp
     src/filters/xBRZ/xbrz.cpp
+    src/filters/sdl.cpp
 )
 
 SET(SRC_HQ_C

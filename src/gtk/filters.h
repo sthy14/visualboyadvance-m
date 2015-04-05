@@ -22,7 +22,7 @@
 
 #include "../System.h"
 
-int Init_2xSaI(u32);
+#include "../filters/filters.hpp"
 
 namespace VBA
 {
@@ -43,8 +43,10 @@ enum EFilter
   FilterBilinearPlus,
   FilterScanlines,
   FilterScanlinesTV,
-  FilterHq2x,
   FilterLq2x,
+  FilterHq2x,
+  FilterHq3x,
+  FilterHq4x,
   FilterxBRZ2x,
   LastFilter = FilterxBRZ2x
 };
