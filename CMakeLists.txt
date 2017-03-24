@@ -1,7 +1,7 @@
+cmake_minimum_required( VERSION 2.8.12 )
+
 # The project's name is VBA-M it uses C and C++ code
 PROJECT(VBA-M C CXX)
-
-cmake_minimum_required( VERSION 2.8.12 )
 
 IF(CMAKE_BUILD_TYPE STREQUAL "")
     SET(CMAKE_BUILD_TYPE "Release" CACHE STRING "Build Type" FORCE)
