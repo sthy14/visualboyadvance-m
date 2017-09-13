@@ -22,6 +22,8 @@ option( ENABLE_SDL "Build the SDL port" OFF )
 option( ENABLE_WX "Build the wxWidgets port" ON )
 option( ENABLE_DEBUGGER "Enable the debugger" ON )
 option( ENABLE_NLS "Enable translations" ON )
+option( ENABLE_EXTERNALS "Use bundled libs" OFF)
+
 
 SET(ASM_DEFAULT OFF)
 
@@ -73,6 +75,7 @@ SET(FFMPEG_DEFAULT ON)
 
 IF(WIN32 AND NOT (MINGW AND MSYS))
     SET(FFMPEG_DEFAULT OFF)
+    SET(FFMPEG_DIR dependencies/ffmpeg)
 ENDIF()
 
 option(ENABLE_FFMPEG "Enable ffmpeg A/V recording" ${FFMPEG_DEFAULT})
@@ -146,11 +149,24 @@ IF(ENABLE_ASM_CORE OR ENABLE_ASM_SCALERS)
 ENDIF()
 
 # Look for some dependencies using CMake scripts
-FIND_PACKAGE(ZLIB REQUIRED)
+IF( ENABLE_EXTERNALS )
+    ADD_SUBDIRECTORY(dependencies/zlib)
+    INCLUDE_DIRECTORIES(dependencies/zlib)
+    ADD_SUBDIRECTORY(dependencies/libpng)
+    INCLUDE_DIRECTORIES(dependencies/libpng)
+    ADD_SUBDIRECTORY(dependencies/sdl2)
+    INCLUDE_DIRECTORIES(dependencies/sdl2/include)
+    ADD_DEFINITIONS(${SDL2_DEFINITIONS})
+ELSE()
+    FIND_PACKAGE(ZLIB REQUIRED)
+    FIND_PACKAGE(PNG REQUIRED)
+    FIND_PACKAGE(SDL2 REQUIRED)
+    ADD_DEFINITIONS(${SDL2_DEFINITIONS})
+ENDIF()
 FIND_PACKAGE(OpenGL REQUIRED)
 
 # TODO: make static on mac and fedora cross-compiles
-FIND_PACKAGE(PNG REQUIRED)
+
 
 IF(APPLE AND NOT MACPORTS)
     SET(SDL2_STATIC ON)
@@ -164,16 +180,20 @@ IF(WINDOWS AND FEDORA_HOST)
     SET(SDL2_STATIC ON)
 ENDIF()
 
-FIND_PACKAGE(SDL2 REQUIRED)
-ADD_DEFINITIONS(${SDL2_DEFINITIONS})
+
 
 if( ENABLE_LINK )
-    # msys2 does not have static sfml libs atm
-    # while on mxe we use static libs
-    if(WIN32 AND ((NOT (MINGW AND MSYS)) OR CMAKE_TOOLCHAIN_FILE MATCHES mxe))
-        set(SFML_STATIC_LIBRARIES TRUE)
-    endif()
-    FIND_PACKAGE ( SFML 2 COMPONENTS network system REQUIRED )
+    IF( ENABLE_EXTERNALS )
+        ADD_SUBDIRECTORY(dependencies/SFML)
+        INCLUDE_DIRECTORIES(BEFORE dependencies/SFML/include)
+    ELSE()
+        # msys2 does not have static sfml libs atm
+        # while on mxe we use static libs
+        if(WIN32 AND ((NOT (MINGW AND MSYS)) OR CMAKE_TOOLCHAIN_FILE MATCHES mxe))
+            set(SFML_STATIC_LIBRARIES TRUE)
+        endif()
+        FIND_PACKAGE ( SFML 2 COMPONENTS network system REQUIRED )
+    ENDIF()
 endif( ENABLE_LINK )
 
 # set the standard libraries all ports use
