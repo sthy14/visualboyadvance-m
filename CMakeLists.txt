@@ -186,6 +186,7 @@ if( ENABLE_LINK )
     IF( ENABLE_EXTERNALS )
         ADD_SUBDIRECTORY(dependencies/SFML)
         INCLUDE_DIRECTORIES(BEFORE dependencies/SFML/include)
+        ADD_DEFINITIONS(-DSFML_STATIC)
     ELSE()
         # msys2 does not have static sfml libs atm
         # while on mxe we use static libs
