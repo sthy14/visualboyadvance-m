@@ -1,0 +1,39 @@
+#!/bin/sh
+
+set -e
+
+BUILD_ROOT=$HOME/vbam-build-linux
+
+. "$(dirname "$0")/../builder/unix.sh"
+
+table_insert_before DISTS glib '
+    libcap          https://www.kernel.org/pub/linux/libs/security/linux-privs/libcap2/libcap-2.25.tar.xz       lib/libcap.a
+    util-linux      https://www.kernel.org/pub/linux/utils/util-linux/v2.31/util-linux-2.31.tar.xz              lib/libmount.a
+'
+
+table_insert_before DISTS sfml '
+    libudev         https://github.com/systemd/systemd/archive/v235.tar.gz                                      lib/libudev.a
+'
+
+table_line_append DIST_PRE_BUILD  libcap ':; clear_build_env;'
+table_line_append DIST_POST_BUILD libcap ':; set_build_env; rm -f "$BUILD_ROOT"/root/lib/libcap.so*;'
+
+table_line_append DIST_EXTRA_LDFLAGS util-linux '-lintl -liconv'
+
+table_line_append DIST_PATCHES libudev 'https://gist.githubusercontent.com/rkitover/47a5f8c8479ed03f903edc61e027562f/raw/3187d958dccaf3b600df16a2f0bd23b2e9ce39a2/systemd-235-static-libudev.patch'
+
+table_line_append DIST_EXTRA_LDFLAGS libudev '-Wl,--allow-multiple-definition -Wl,--start-group -lglib-2.0 -lgio-2.0 -lgmodule-2.0 -lgobject-2.0 -lpcre -lz -lffi -lpthread -lresolv -ldl -lintl -liconv -luuid -Wl,--end-group'
+
+table_line_append DIST_ARGS libudev '-Dlink-udev-shared=false'
+
+table_line_append DIST_MAKE_ARGS libudev 'src/libudev/libudev.a'
+
+table_line_append DIST_INSTALL_OVERRIDES libudev " \
+    mkdir -p '$BUILD_ROOT/root/lib/pkgconfig'; \
+    mkdir -p '$BUILD_ROOT/root/include'; \
+    cp -a src/libudev/libudev.a '$BUILD_ROOT/root/lib'; \
+    cp -a src/libudev/libudev.pc '$BUILD_ROOT/root/pkgconfig'; \
+    cp -a ../src/libudev/libudev.h '$BUILD_ROOT/root/include'; \
+"
+
+builder "$@"
